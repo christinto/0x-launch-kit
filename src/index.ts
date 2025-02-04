@@ -3,7 +3,7 @@
 import * as fs from 'fs';
 // import * as inquirer from 'inquirer';  // Not needed anymore if you're not using interactive prompts
 
-import { buildDockerComposeYml, BuildOptions, Network } from './build';
+import { BuildOptions, Network } from './build';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
@@ -81,13 +81,6 @@ async function main() {
         collectibleName: answers.collectibleName || '',
         collectibleDescription: answers.collectibleDescription || '',
     };
-
-    // Build the Docker Compose file (though it won't be needed for Railway)
-    const dockerComposeYml = buildDockerComposeYml(options);
-
-    // If you're still using Docker Compose locally, you can save it here
-    const composeFilePath = process.argv[2] || 'docker-compose.yml';
-    fs.writeFileSync(composeFilePath, dockerComposeYml);
 
     // Inform user that Railway handles deployment without docker-compose
     console.log("You don't need to use 'docker-compose up' on Railway. Just deploy using the Railway interface.");
