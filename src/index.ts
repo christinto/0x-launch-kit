@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as fs from 'fs';
+// import * as fs from 'fs'; docker handling it now
 // import * as inquirer from 'inquirer';  // Not needed anymore if you're not using interactive prompts
 
 import { BuildOptions, Network } from './build';
@@ -66,7 +66,7 @@ async function main() {
 
     const rpcUrl = answers.network === 'ganache' ? 'http://ganache:8545' : answers.rpcUrl;
 
-    const options: BuildOptions = {
+   /* const options: BuildOptions = {
         tokenType: answers.tokenType,
         network: answers.network,
         rpcUrl,
@@ -80,7 +80,7 @@ async function main() {
         collectibleAddress: answers.collectibleAddress || mockERC721Address,
         collectibleName: answers.collectibleName || '',
         collectibleDescription: answers.collectibleDescription || '',
-    };
+    };*/
 
     // Inform user that Railway handles deployment without docker-compose
     console.log("You don't need to use 'docker-compose up' on Railway. Just deploy using the Railway interface.");
