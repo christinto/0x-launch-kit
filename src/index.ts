@@ -3,11 +3,12 @@
 // import * as fs from 'fs'; docker handling it now
 // import * as inquirer from 'inquirer';  // Not needed anymore if you're not using interactive prompts
 
-import { BuildOptions, Network } from './build';
+//import { BuildOptions, Network } from './build';
+import { Network } from './build';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-const mockERC721Address = '0x07f96aa816c1f244cbc6ef114bb2b023ba54a2eb';
+// const mockERC721Address = '0x07f96aa816c1f244cbc6ef114bb2b023ba54a2eb';
 
 // Hardcoded values for token type and network
 const tokenType: "ERC20" | "ERC721" = "ERC20"; // Set token type to ERC20
@@ -64,7 +65,7 @@ async function main() {
     `
     );
 
-    const rpcUrl = answers.network === 'ganache' ? 'http://ganache:8545' : answers.rpcUrl;
+    //const rpcUrl = answers.network === 'ganache' ? 'http://ganache:8545' : answers.rpcUrl;
 
    /* const options: BuildOptions = {
         tokenType: answers.tokenType,
