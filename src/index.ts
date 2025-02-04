@@ -11,7 +11,7 @@ const mockERC721Address = '0x07f96aa816c1f244cbc6ef114bb2b023ba54a2eb';
 
 // Hardcoded values for token type and network
 const tokenType: "ERC20" | "ERC721" = "ERC20"; // Set token type to ERC20
-const network: Network = "kovan"; // Set network to Kovan
+const network: Network = "kovan"; // Hardcoded network to Kovan
 
 function getRpcUrl(network: Network): string {
     switch (network) {
@@ -33,41 +33,17 @@ function getRpcUrl(network: Network): string {
 const isAddress = (s: string) => /(0x)?[0-9a-fA-F]{40}/.test(s);
 
 async function main() {
-    const networkChoices: Array<{ name: string; value: Network }> = [
-        {
-            name: 'Mainnet',
-            value: 'mainnet',
-        },
-        {
-            name: 'Kovan',
-            value: 'kovan',
-        },
-        {
-            name: 'Ropsten',
-            value: 'ropsten',
-        },
-        {
-            name: 'Rinkeby',
-            value: 'rinkeby',
-        },
-        {
-            name: 'Ganache',
-            value: 'ganache',
-        },
-        {
-            name: 'Custom',
-            value: 'custom',
-        },
-    ];
+    // Remove networkChoices as it's no longer used
+    // const networkChoices: Array<{ name: string; value: Network }> = [...];  // Removed
 
     const answers = {
         tokenType: tokenType, // Hardcoded value for token type
-        network: network, // Hardcoded value for network
+        network: network, // Hardcoded value for network (Kovan)
         rpcUrl: getRpcUrl(network), // Automatically set based on the network
         relayerUrl: 'http://localhost:3000/sra/v3', // Hardcoded Relayer URL
         relayerWebsocketUrl: 'ws://localhost:3000/sra/v3', // Hardcoded WebSocket URL
         feeRecipient: ZERO_ADDRESS, // Hardcoded fee recipient
-        theme: 'light', // Hardcoded theme
+        theme: 'light' as 'light' | 'dark', // Hardcoded theme as 'light'
         port: 3001, // Hardcoded port
         makerFee: 0, // Hardcoded maker fee
         takerFee: 0, // Hardcoded taker fee
