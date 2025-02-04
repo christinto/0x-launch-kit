@@ -71,159 +71,17 @@ function getRpcUrl(network: Network): string {
 const isAddress = (s: string) => /(0x)?[0-9a-fA-F]{40}/.test(s);
 
 async function main() {
-    const networkChoices: Array<{ name: string; value: Network }> = [
-        {
-            name: 'Mainnet',
-            value: 'mainnet',
-        },
-        {
-            name: 'Kovan',
-            value: 'kovan',
-        },
-        {
-            name: 'Ropsten',
-            value: 'ropsten',
-        },
-        {
-            name: 'Rinkeby',
-            value: 'rinkeby',
-        },
-        {
-            name: 'Ganache',
-            value: 'ganache',
-        },
-        {
-            name: 'Custom',
-            value: 'custom',
-        },
-    ];
-
-    const answers = await inquirer.prompt<any>([
-        {
-            type: 'list',
-            name: 'tokenType',
-            message:
-                zeroExAsciiArt +
-                `\n\n\n
-            🚀 Welcome to the 0x Launch Kit Wizard! 🚀 \n
-            Start your own exchange in under a minute
-
-            ----------------------------------------------------------------
-
-            Select the kind of token you want to support on your exchange`,
-            choices: ['ERC20', 'ERC721'],
-        },
-        {
-            type: 'list',
-            name: 'network',
-            message: 'Select the network you want to use',
-            choices: networkChoices,
-        },
-        {
-            type: 'input',
-            name: 'rpcUrl',
-            message: 'Select the RPC URL you want to use',
-            default: (answers: any) => {
-                return getRpcUrl(answers.network);
-            },
-            validate: (rpcUrl: string) => {
-                return /https?:\/\/.+/.test(rpcUrl) ? true : 'Please enter a valid URL';
-            },
-            when: (answers: any) => answers.network !== 'ganache',
-        },
-        {
-            type: 'input',
-            name: 'relayerUrl',
-            message:
-                'Launch Kit will create a backend Relayer. Enter the public URL for the backend Relayer or leave default:',
-            default: 'http://localhost:3000/sra/v3',
-            validate: (rpcUrl: string) => {
-                return /https?:\/\/.+/.test(rpcUrl) ? true : 'Please enter a valid URL';
-            },
-        },
-        {
-            type: 'input',
-            name: 'relayerWebsocketUrl',
-            message:
-                'Launch Kit will create a backend Relayer. Enter the public URL for the backend websocket or leave default:',
-            default: 'ws://localhost:3000/sra/v3',
-            validate: (rpcUrl: string) => {
-                return /wss?:\/\/.+/.test(rpcUrl) ? true : 'Please enter a valid Websocket URL';
-            },
-        },
-        {
-            type: 'input',
-            name: 'collectibleAddress',
-            message: 'Enter the address of the collectible:',
-            default: ZERO_ADDRESS,
-            validate: (answer: string) => {
-                return isAddress(answer) ? true : 'Please enter a valid address';
-            },
-            when: (answers: any) => answers.tokenType === 'ERC721' && answers.network !== 'ganache',
-        },
-        {
-            type: 'input',
-            name: 'collectibleName',
-            message: 'Enter the name of the collectible:',
-            validate: (answer: string) => {
-                return answer.length > 0 ? true : 'Please enter a name';
-            },
-            when: (answers: any) => answers.tokenType === 'ERC721' && answers.network !== 'ganache',
-        },
-        {
-            type: 'input',
-            name: 'collectibleDescription',
-            message: 'Enter the description of the collectible (optional):',
-            when: (answers: any) => answers.tokenType === 'ERC721' && answers.network !== 'ganache',
-        },
-        {
-            type: 'input',
-            name: 'feeRecipient',
-            message: 'Enter the fee recipient:',
-            default: ZERO_ADDRESS,
-            validate: (answer: string) => {
-                return isAddress(answer) ? true : 'Please enter a valid address';
-            },
-        },
-        {
-            type: 'number',
-            name: 'makerFee',
-            message: 'Enter the maker fee:',
-            default: 0,
-            when: (answers: any) => answers.feeRecipient !== ZERO_ADDRESS,
-        },
-        {
-            type: 'number',
-            name: 'takerFee',
-            message: 'Enter the taker fee:',
-            default: 0,
-            when: (answers: any) => answers.feeRecipient !== ZERO_ADDRESS,
-        },
-        {
-            type: 'list',
-            name: 'theme',
-            message: 'Select the theme you want to use',
-            choices: [
-                {
-                    name: 'Light',
-                    value: 'light',
-                },
-                {
-                    name: 'Dark',
-                    value: 'dark',
-                },
-            ],
-        },
-        {
-            type: 'number',
-            name: 'port',
-            message: 'Enter the port for the frontend server:',
-            default: 3001,
-            validate: (port: number) => {
-                return 1 <= port && port <= 65535 ? true : 'Enter a port between 1 and 65535';
-            },
-        },
-    ]);
+    // Hardcoded answers as you requested
+    const answers = {
+        tokenType: 'ERC20', // Fixed token type: ERC20
+        network: 'kovan', // Fixed network: Kovan
+        rpcUrl: 'https://kovan.infura.io/', // Fixed RPC URL for Kovan
+        relayerUrl: 'http://localhost:3000/sra/v3', // Fixed relayer URL
+        relayerWebsocketUrl: 'ws://localhost:3000/sra/v3', // Fixed websocket URL
+        feeRecipient: '0x0000000000000000000000000000000000000000', // Fixed fee recipient
+        theme: 'light', // Fixed theme: Light
+        port: 3001, // Fixed port
+    };
 
     console.log(
         `
@@ -244,14 +102,14 @@ async function main() {
         rpcUrl,
         relayerUrl: answers.relayerUrl,
         relayerWebsocketUrl: answers.relayerWebsocketUrl,
-        feeRecipient: answers.feeRecipient || ZERO_ADDRESS,
+        feeRecipient: answers.feeRecipient || '0x0000000000000000000000000000000000000000',
         theme: answers.theme,
         port: answers.port,
-        makerFee: answers.makerFee || 0,
-        takerFee: answers.takerFee || 0,
-        collectibleAddress: answers.collectibleAddress || mockERC721Address,
-        collectibleName: answers.collectibleName || '',
-        collectibleDescription: answers.collectibleDescription || '',
+        makerFee: 0, // You can adjust maker and taker fees if necessary
+        takerFee: 0, // Fixed fees
+        collectibleAddress: '0x0000000000000000000000000000000000000000', // Fixed collectible address
+        collectibleName: '', // Fixed empty name
+        collectibleDescription: '', // Fixed empty description
     };
 
     const dockerComposeYml = buildDockerComposeYml(options);
