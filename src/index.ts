@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import * as fs from 'fs';
-import * as inquirer from 'inquirer';
+//import * as inquirer from 'inquirer';
 
 import { buildDockerComposeYml, BuildOptions, Network } from './build';
 
@@ -30,7 +30,7 @@ function getRpcUrl(network: Network): string {
     }
 }
 
-const isAddress = (s: string) => /(0x)?[0-9a-fA-F]{40}/.test(s);
+//const isAddress = (s: string) => /(0x)?[0-9a-fA-F]{40}/.test(s);
 
 async function main() {
     // Remove networkChoices as it's no longer used
