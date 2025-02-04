@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import * as fs from 'fs';
-//import * as inquirer from 'inquirer';
+// import * as inquirer from 'inquirer';  // Not needed anymore if you're not using interactive prompts
 
 import { buildDockerComposeYml, BuildOptions, Network } from './build';
 
@@ -27,15 +27,15 @@ function getRpcUrl(network: Network): string {
             return 'http://ganache:8545/';
         case 'custom':
             return 'http://localhost:8545/';
+        default:
+            throw new Error('Invalid network');
     }
 }
 
-//const isAddress = (s: string) => /(0x)?[0-9a-fA-F]{40}/.test(s);
+// Remove unused isAddress function
 
 async function main() {
-    // Remove networkChoices as it's no longer used
-    // const networkChoices: Array<{ name: string; value: Network }> = [...];  // Removed
-
+    // Hardcoded answers to bypass inquirer prompts
     const answers = {
         tokenType: tokenType, // Hardcoded value for token type
         network: network, // Hardcoded value for network (Kovan)
@@ -58,9 +58,10 @@ async function main() {
 
     🚀🚀🚀🚀 .... Preparing for liftoff .... 🚀🚀🚀🚀
 
-    Run << docker-compose up >> and open your browser to http://localhost:` +
-            answers.port +
-            `\n\n\n\n\n`,
+    Visit your application on Railway after deployment! (No need for 'docker-compose up' on Railway)
+
+    Your app will be accessible at http://localhost:${answers.port}
+    `
     );
 
     const rpcUrl = answers.network === 'ganache' ? 'http://ganache:8545' : answers.rpcUrl;
@@ -81,11 +82,15 @@ async function main() {
         collectibleDescription: answers.collectibleDescription || '',
     };
 
+    // Build the Docker Compose file (though it won't be needed for Railway)
     const dockerComposeYml = buildDockerComposeYml(options);
 
+    // If you're still using Docker Compose locally, you can save it here
     const composeFilePath = process.argv[2] || 'docker-compose.yml';
-
     fs.writeFileSync(composeFilePath, dockerComposeYml);
+
+    // Inform user that Railway handles deployment without docker-compose
+    console.log("You don't need to use 'docker-compose up' on Railway. Just deploy using the Railway interface.");
 }
 
 main();
